@@ -6,7 +6,7 @@ const app = express()
 app.use(express.json())
 app.use("/api/generate",generateRoute)
 
-
+// app.locals.model  = connectToModel()
 app.listen(3000,() =>{
     console.log("server listening at port 3000")
 }
