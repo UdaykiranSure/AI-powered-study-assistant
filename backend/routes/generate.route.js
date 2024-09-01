@@ -6,8 +6,8 @@ import {
   askQuery,
 } from "../controller/generate.controller.js";
 
-router.get("/questions/:mode", generateQuestions);
-router.get("/chat/start", startChat);
-router.get("/chat/query", askQuery);
+router.post("/questions/:mode", generateQuestions);
+router.post("/chat/start", startChat);
+router.post("/chat/query", askQuery);
 
 export default router;
