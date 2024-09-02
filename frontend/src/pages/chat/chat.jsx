@@ -40,7 +40,6 @@ const Chat = () => {
 
   },[])
 
- 
 
   const sendMessage = async () => {
     if (input.trim() === '') return;
