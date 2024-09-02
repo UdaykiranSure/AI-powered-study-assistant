@@ -3,7 +3,7 @@ import './chat.css'
 import { FileContext } from '../../context/fileContext.jsx';
 import {v4} from "uuid"
 
-const Chat = () => {
+const Chat = () => { 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const {fileContext} = useContext(FileContext)
