@@ -5,7 +5,6 @@ import '../../index.css'
 const Quiz =   () => {
   const [activeQuestion, setActiveQuestion] = useState(0)
   const [selectedAnswer, setSelectedAnswer] = useState('')
-  const [performance,setPerformance] = useState({})
   const [showResult, setShowResult] = useState(false)
   const [selectedAnswerIndex, setSelectedAnswerIndex] = useState(null)
   const {loading,questions: questions} =   useGetQuestions() 
@@ -14,14 +13,21 @@ const Quiz =   () => {
     correctAnswers: 0, 
     wrongAnswers: 0,
   })
-
-  console.log(typeof questions)
-
+  let [performance,setPerformance]  = useState({})
+  console.log(showResult)
   
-  const onClickNext = () => {
+  const onClickNext = (topic) => {
+    console.log(performance)
+    let tempPerf = {...performance}
     setSelectedAnswerIndex(null)
-    console.log(selectedAnswer)
-   
+    if(!tempPerf[topic]){
+      tempPerf = {...tempPerf,[topic] : {correct : 0, total:0}}
+    }
+    tempPerf[topic]['total'] += 1
+    if(selectedAnswer){
+      tempPerf[topic]['correct'] += 1
+    }
+    setPerformance(tempPerf)
     setResult((prev) =>
       selectedAnswer
         ? {
@@ -34,9 +40,11 @@ const Quiz =   () => {
     if (activeQuestion !== questions?.length - 1) {
       setActiveQuestion((prev) => prev + 1)
     } else {
+      console.log("going wrong")
       setActiveQuestion(0)
       setShowResult(true)
     }
+    globalThis.performance = performance;
   }
 
   const onAnswerSelected = (index,answer) => {
@@ -52,8 +60,8 @@ console.log(questions)
   const addLeadingZero = (number) => (number > 9 ? number : `0${number}`)
   if(questions.length > 0){
     console.log(questions)
-    const { question,  options, answer } = questions?.[activeQuestion]
-
+    const { question,  options, answer,topic } = questions?.[activeQuestion]
+    
   return (
      <div className="quiz-container">
       {!showResult ? (
@@ -75,7 +83,7 @@ console.log(questions)
             ))}
           </ul>
           <div className="flex-right">
-            <button onClick={onClickNext()} disabled={selectedAnswerIndex === null}>
+            <button onClick={() => onClickNext(topic)} disabled={selectedAnswerIndex === null}>
               {activeQuestion === questions?.length - 1 ? 'Finish' : 'Next'}
             </button>
           </div>
@@ -83,6 +91,12 @@ console.log(questions)
       ) : (
         <div className="result">
           <h3>Result</h3>
+          <p>Performance: </p>
+          {
+            Object.keys(performance).forEach((topic)=>{
+              (<p>topic: {performance[topic]['correct']}</p>)
+            })
+          }
           <p>
             Total Question: <span>{questions?.length}</span>
           </p>

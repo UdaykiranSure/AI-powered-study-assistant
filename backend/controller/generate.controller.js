@@ -13,7 +13,7 @@ export const generateQuestions = async (req, res) => {
     if (mode.mode === "1") {
       console.log(1);
       result = await model.generateContent(
-        `generate exactly 20  mutli choise questions on important topics that covered in /n/n ${text},/n/n every question should contain required context to answer, return in json format contains {questions:[{question:...,options:[0,1,2,3],answer: /just give option number},{question:...,option:[1,2,3,4],answer: 1...},...]} without any stylings`
+        `generate exactly 20  mutli choise questions on all important topics that covered in /n/n ${text},/n/n every question should contain required context to answer, return in json format contains {questions:[{question:...,options:[0,1,2,3],answer: /just give option number, topic: //topic this question covers},{question:...,option:[1,2,3,4],answer: 1... ,topic:"differenciation"},...]} without any stylings`
       );
     } else {
       result = await model.generateContent(
