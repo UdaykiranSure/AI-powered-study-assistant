@@ -12,6 +12,10 @@ const documentSchema = new mongoose.Schema({
     data:{
         type:Object,
         required: true
+    },
+    text:{
+        type:String,
+        required:true
     }
 })
 

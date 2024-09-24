@@ -16,7 +16,8 @@ function App() {
       <Routes>
 
         <Route path='/' element = {<Home/>}/>
-        <Route path='/notes/' element = {<Navigate to= {`/notes/${uuidv4()}`}/>}/>
+        <Route path='/notes/'/>
+        <Route path='/notes/new' element = {<Navigate to= {`/notes/${uuidv4()}`}/>}/>
         <Route path='/notes/:id' element = {<TextEditor/>}/>
         <Route path = '/selection' element = {fileContext? <SelectionPage/>:<Navigate to = "/"/>} />
         <Route path = '/quiz' element = {fileContext? <Quiz/>:<Navigate to = "/"/>}/>

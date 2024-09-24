@@ -20,8 +20,15 @@ const TOOLBAR_OPTIONS = [
 
 const TextEditor = ()=> {
   const {id:documentId } = useParams()
-
+  const [fileName,setFileName] = useState(null)
   const [quill,setQuill] = useState()
+  const [editing,setEditing] = useState(false)
+  const [text,setText] = useState("")
+
+  const startEditing = ()=>{
+    // quill.enable(true)
+    setEditing(true)
+  }
 
   const handleSave = async ()=>{
     console.log("saving changes")
@@ -30,17 +37,19 @@ const TextEditor = ()=> {
       headers:{
         "Content-Type":"application/json"
     },
-      body: JSON.stringify({data:quill.getContents()})
+      body: JSON.stringify({data:quill.getContents(),fileName,text:quill.getText()})
     })
     console.log(res.json)
   }
 
+ 
   useEffect(()=>{
     const fetchData = async ()=>{
     const res = await fetch(`/api/document/${documentId}`)
     const body = await res.json()
     console.log(body)
-    quill.setContents(body)
+    quill.setContents(body.data)
+    setFileName(body.fileName)
     }
     fetchData()
     
@@ -52,14 +61,19 @@ const TextEditor = ()=> {
     const editor = document.createElement('div')
     wrapper.append(editor)
     const q = new Quill(editor,{theme:"snow",modules:{toolbar:TOOLBAR_OPTIONS}})
+    // q.enable(false)
     setQuill(q)
   },[])
 
   return (  
-    <>
-    <div><button  onClick={handleSave} >Save</button></div>
-    <div className ="textcontainer" ref = {wrapperRef}></div>
-    </>
+  
+     editing?
+      <div><input type="text" placeholder={fileName?fileName:'Enter file name'} onChange={(e)=>setFileName(e.target.value)}/>
+      <button disabled= {fileName?false:true}  onClick={handleSave}>Save</button>
+      <div className ="textcontainer" ref = {wrapperRef}></div></div>
+      :<div><button onClick={startEditing}>Edit</button><div className ="textcontainer" ref = {wrapperRef}></div> </div>
+    
+    
   )
 }
 export default TextEditor
